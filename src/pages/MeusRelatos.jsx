@@ -16,43 +16,47 @@ export default function MeusRelatos() {
   }
 
   return (
-    <section className="secao">
+    <section className="py-5">
       <div className="container">
-        <div className="cabecalho-secao">
-          <span className="etiqueta etiqueta--verde">Acompanhamento</span>
-          <h1>Meus relatos</h1>
-          <p>
+        <div className="mb-4">
+          <span className="etiqueta etiqueta-verde mb-3">Acompanhamento</span>
+          <h1 className="fw-bold">Meus relatos</h1>
+          <p className="text-body-secondary">
             Veja as barreiras registradas neste dispositivo e atualize o
             status de cada ocorrência.
           </p>
         </div>
 
-        <p role="status" aria-live="polite">
+        <div
+          className="alert alert-info"
+          role="status"
+          aria-live="polite"
+        >
           {mensagem ||
             (relatos.length
               ? `Você registrou ${relatos.length} relato(s).`
               : "Você ainda não registrou nenhuma barreira.")}
-        </p>
+        </div>
 
-        <ul className="lista-relatos">
+        <div className="row g-4">
           {relatos.map((relato) => (
-            <li key={relato.id}>
+            <div className="col-md-6 col-lg-4" key={relato.id}>
               <RelatoCard relato={relato} />
 
               <button
                 type="button"
-                className="botao botao--secundario"
+                className="btn botao-contorno-azul w-100 mt-3"
                 onClick={() => alterarStatus(relato.id, relato.status)}
               >
                 {relato.status === "Aberto"
                   ? "Marcar como resolvido"
                   : "Reabrir relato"}
               </button>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
 
-        <Link to="/relatar" className="botao botao--primario">
+        <Link to="/relatar" className="btn botao-amarelo mt-4">
           Relatar nova barreira
         </Link>
       </div>

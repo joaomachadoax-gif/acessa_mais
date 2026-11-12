@@ -1,30 +1,18 @@
 import { useState } from "react";
 import MapView from "../components/MapView.jsx";
 import { RELATOS_INICIAIS } from "../data/relatosIniciais.js";
+import { calcularRotaAcessivel } from "../services/routing.js";
 
 const CENTRO_PADRAO = [-23.5505, -46.6333];
-
-function calcularDistanciaKm(pontoA, pontoB) {
-  const [latA, lonA] = pontoA;
-  const [latB, lonB] = pontoB;
-
-  const R = 6371;
-  const dLat = ((latB - latA) * Math.PI) / 180;
-  const dLon = ((lonB - lonA) * Math.PI) / 180;
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((latA * Math.PI) / 180) *
-      Math.cos((latB * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2;
-
-  return 2 * R * Math.asin(Math.sqrt(a));
-}
 
 export default function Trajeto() {
   const [origem, setOrigem] = useState(null);
   const [destino, setDestino] = useState(null);
+  const [rota, setRota] = useState(null);
+  const [instrucoes, setInstrucoes] = useState([]);
   const [mensagem, setMensagem] = useState("");
+  const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
   function aoClicarNoMapa(evento) {
     const { lat, lng } = evento.latlng;
@@ -33,49 +21,68 @@ export default function Trajeto() {
     if (!origem || (origem && destino)) {
       setOrigem(ponto);
       setDestino(null);
+      setRota(null);
+      setInstrucoes([]);
       setMensagem("Origem selecionada. Agora clique no destino.");
       return;
     }
 
     setDestino(ponto);
+    buscarRota(ponto);
+  }
 
-    const distancia = calcularDistanciaKm(origem, ponto);
+  async function buscarRota(pontoDestino) {
+    setCarregando(true);
+    setErro("");
+    setRota(null);
+    setInstrucoes([]);
 
-    setMensagem(
-      `Trajeto simulado de aproximadamente ${distancia.toFixed(1)} km em linha reta.`
-    );
+    try {
+      const resultado = await calcularRotaAcessivel(origem, pontoDestino);
+
+      setRota(resultado.coordenadasRota);
+      setInstrucoes(resultado.instrucoes);
+      setMensagem(
+        `Rota acessível encontrada: ${resultado.distanciaKm} km, aproximadamente ${resultado.duracaoMinutos} minutos.`
+      );
+    } catch (erroAtual) {
+      setErro(erroAtual.message);
+      setDestino(null);
+    } finally {
+      setCarregando(false);
+    }
   }
 
   function limparSelecao() {
     setOrigem(null);
     setDestino(null);
+    setRota(null);
+    setInstrucoes([]);
     setMensagem("");
+    setErro("");
   }
 
-  const rota = origem && destino ? [origem, destino] : null;
-
   return (
-    <section className="secao">
+    <section className="py-5">
       <div className="container">
-        <div className="cabecalho-secao">
-          <span className="etiqueta etiqueta--azul">Planejar</span>
-          <h1>Selecione origem e destino</h1>
+        <div className="mb-4">
+          <span className="etiqueta etiqueta-azul mb-3">Planejar</span>
 
-          <p>
-            Clique primeiro no ponto de origem e depois no destino. O mapa
-            mostrará uma linha reta entre os pontos e os relatos de barreiras
-            cadastrados.
+          <h1 className="fw-bold">Selecione origem e destino</h1>
+
+          <p className="text-body-secondary">
+            Clique primeiro no ponto de origem e depois no destino. O site
+            calculará uma rota acessível seguindo as ruas.
           </p>
         </div>
 
-        <p className="aviso">
-          Protótipo: a linha representa uma distância aproximada e não uma
-          rota real pelas ruas.
-        </p>
+        {erro && <div className="alert alert-danger">{erro}</div>}
 
-        <p className="erro" role="alert">
-          {mensagem}
-        </p>
+        <div className="alert alert-info" role="status" aria-live="polite">
+          {carregando
+            ? "Calculando rota acessível..."
+            : mensagem || "Clique no mapa para selecionar a origem."}
+        </div>
 
         <MapView
           centro={CENTRO_PADRAO}
@@ -86,9 +93,23 @@ export default function Trajeto() {
           aoClicarNoMapa={aoClicarNoMapa}
         />
 
+        {instrucoes.length > 0 && (
+          <div className="card cartao-suave mt-4">
+            <div className="card-body">
+              <h2 className="h5 fw-bold mb-3">Instruções do trajeto</h2>
+
+              <ol className="mb-0">
+                {instrucoes.map((instrucao, indice) => (
+                  <li key={indice}>{instrucao}</li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        )}
+
         <button
           type="button"
-          className="botao botao--secundario"
+          className="btn botao-contorno-azul mt-4"
           onClick={limparSelecao}
         >
           Limpar seleção

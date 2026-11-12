@@ -3,7 +3,8 @@ import {
   TileLayer,
   Marker,
   Popup,
-  Polyline
+  Polyline,
+  useMapEvents
 } from "react-leaflet";
 import L from "leaflet";
 
@@ -13,6 +14,16 @@ const iconeBarreira = L.divIcon({
   iconSize: [32, 32],
   iconAnchor: [16, 16]
 });
+
+function EventoCliqueNoMapa({ aoClicarNoMapa }) {
+  useMapEvents({
+    click: (evento) => {
+      aoClicarNoMapa?.(evento);
+    }
+  });
+
+  return null;
+}
 
 export default function MapView({
   centro,
@@ -24,7 +35,7 @@ export default function MapView({
 }) {
   return (
     <div
-      className="mapa"
+      className="mapa mb-4"
       role="application"
       aria-label="Mapa de acessibilidade urbana"
     >
@@ -32,14 +43,13 @@ export default function MapView({
         center={centro}
         zoom={14}
         scrollWheelZoom={true}
-        eventHandlers={{
-          click: (evento) => aoClicarNoMapa?.(evento)
-        }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+
+        <EventoCliqueNoMapa aoClicarNoMapa={aoClicarNoMapa} />
 
         {origem && (
           <Marker position={origem}>

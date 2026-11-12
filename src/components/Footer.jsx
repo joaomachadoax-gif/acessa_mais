@@ -2,36 +2,41 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="rodape">
-      <div className="container rodape__conteudo">
-        <div>
-          <p className="logo rodape__logo">
-            <span aria-hidden="true">♿</span> Acessa<span>+</span>
-          </p>
+    <footer className="fundo-azul-escuro text-white py-5 mt-5">
+      <div className="container">
+        <div className="row g-4">
+          <div className="col-md-7">
+            <p className="h5 fw-bold mb-2">Acessa+</p>
+            <p className="mb-0">
+              Protótipo de CitizenTech para uma cidade mais acessível,
+              inclusiva e segura.
+            </p>
+          </div>
 
-          <p>
-            Protótipo de CitizenTech para uma cidade mais acessível, inclusiva
-            e segura.
-          </p>
+          <div className="col-md-5">
+            <ul className="list-unstyled d-flex flex-wrap gap-3 mb-2">
+              <li>
+                <Link to="/barreiras" className="text-white text-decoration-none">
+                  Barreiras
+                </Link>
+              </li>
+              <li>
+                <Link to="/relatar" className="text-white text-decoration-none">
+                  Relatar
+                </Link>
+              </li>
+              <li>
+                <Link to="/sobre" className="text-white text-decoration-none">
+                  Sobre
+                </Link>
+              </li>
+            </ul>
+
+            <p className="small mb-0">
+              Mapa e dados © OpenStreetMap. Protótipo acadêmico.
+            </p>
+          </div>
         </div>
-
-        <nav aria-label="Links do rodapé">
-          <ul>
-            <li>
-              <Link to="/barreiras">Barreiras</Link>
-            </li>
-            <li>
-              <Link to="/relatar">Relatar</Link>
-            </li>
-            <li>
-              <Link to="/sobre">Sobre</Link>
-            </li>
-          </ul>
-        </nav>
-
-        <p className="rodape__creditos">
-          Mapa e dados © OpenStreetMap. Protótipo acadêmico.
-        </p>
       </div>
     </footer>
   );

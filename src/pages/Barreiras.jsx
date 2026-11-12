@@ -30,29 +30,24 @@ export default function Barreiras() {
   function aoMudar(evento) {
     const { name, value } = evento.target;
 
-    setFiltros((filtrosAnteriores) => ({
-      ...filtrosAnteriores,
+    setFiltros((valoresAnteriores) => ({
+      ...valoresAnteriores,
       [name]: value
     }));
   }
 
   function aoLimpar() {
-    setFiltros({
-      bairro: "",
-      tipo: "",
-      gravidade: ""
-    });
+    setFiltros({ bairro: "", tipo: "", gravidade: "" });
   }
 
   return (
-    <section className="secao">
+    <section className="py-5">
       <div className="container">
-        <div className="cabecalho-secao">
-          <span className="etiqueta etiqueta--azul">Mapa</span>
-          <h1>Barreiras por região</h1>
-          <p>
-            Selecione uma região para visualizar os relatos disponíveis e os
-            pontos marcados no mapa.
+        <div className="mb-4">
+          <span className="etiqueta etiqueta-azul mb-3">Mapa</span>
+          <h1 className="fw-bold">Barreiras por região</h1>
+          <p className="text-body-secondary">
+            Selecione uma região para visualizar os relatos disponíveis.
           </p>
         </div>
 
@@ -62,7 +57,7 @@ export default function Barreiras() {
           aoLimpar={aoLimpar}
         />
 
-        <p role="status" aria-live="polite">
+        <p className="text-body-secondary" role="status" aria-live="polite">
           {relatosFiltrados.length
             ? `${relatosFiltrados.length} relato(s) encontrado(s).`
             : "Nenhum relato encontrado com os filtros escolhidos."}
@@ -75,17 +70,15 @@ export default function Barreiras() {
           )}
         />
 
-        <section aria-labelledby="titulo-lista">
-          <h2 id="titulo-lista">Relatos encontrados</h2>
+        <h2 className="h4 fw-bold mt-5 mb-3">Relatos encontrados</h2>
 
-          <ul className="lista-relatos">
-            {relatosFiltrados.map((relato) => (
-              <li key={relato.id}>
-                <RelatoCard relato={relato} />
-              </li>
-            ))}
-          </ul>
-        </section>
+        <div className="row g-4">
+          {relatosFiltrados.map((relato) => (
+            <div className="col-md-6 col-lg-4" key={relato.id}>
+              <RelatoCard relato={relato} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

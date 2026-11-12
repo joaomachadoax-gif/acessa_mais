@@ -14,52 +14,68 @@ export default function Navbar() {
   const [menuAberto, setMenuAberto] = useState(false);
 
   return (
-    <header className="cabecalho">
-      <div className="container cabecalho__conteudo">
-        <NavLink to="/" className="logo">
-          <span className="logo__icone" aria-hidden="true">
-            ♿
-          </span>
+    <header>
+      <nav className="navbar navbar-expand-lg navbar-dark fundo-azul-escuro">
+        <div className="container">
+          <NavLink to="/" className="navbar-brand fw-bold">
+            <span
+              className="d-inline-flex align-items-center justify-content-center me-2"
+              style={{
+                width: "38px",
+                height: "38px",
+                borderRadius: "12px",
+                backgroundColor: "var(--amarelo-500)",
+                color: "var(--azul-900)"
+              }}
+            >
+              ♿
+            </span>
 
-          Acessa<span className="logo__mais">+</span>
-        </NavLink>
+            Acessa+
+          </NavLink>
 
-        <button
-          className="menu-botao"
-          aria-expanded={menuAberto}
-          aria-controls="menu-principal"
-          onClick={() => setMenuAberto(!menuAberto)}
-        >
-          {menuAberto ? "Fechar menu" : "Abrir menu"}
-        </button>
+          <button
+            className="navbar-toggler"
+            type="button"
+            aria-controls="menuPrincipal"
+            aria-expanded={menuAberto}
+            aria-label="Alternar navegação"
+            onClick={() => setMenuAberto(!menuAberto)}
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
 
-        <nav
-          id="menu-principal"
-          className={`menu ${menuAberto ? "aberto" : ""}`}
-          aria-label="Menu principal"
-        >
-          <ul>
-            {links.map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  end={link.to === "/"}
-                  className={({ isActive }) =>
-                    isActive ? "menu__link menu__link--ativo" : "menu__link"
-                  }
-                  onClick={() => setMenuAberto(false)}
-                >
-                  {link.texto}
+          <div
+            className={`collapse navbar-collapse ${menuAberto ? "show" : ""}`}
+            id="menuPrincipal"
+          >
+            <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+              {links.map((link) => (
+                <li className="nav-item" key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    end={link.to === "/"}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "nav-link active fw-semibold"
+                        : "nav-link fw-semibold"
+                    }
+                    onClick={() => setMenuAberto(false)}
+                  >
+                    {link.texto}
+                  </NavLink>
+                </li>
+              ))}
+
+              <li className="nav-item ms-lg-3">
+                <NavLink to="/relatar" className="btn botao-amarelo">
+                  Relatar barreira
                 </NavLink>
               </li>
-            ))}
-          </ul>
-        </nav>
-
-        <NavLink to="/relatar" className="botao botao--primario cabecalho__acao">
-          Relatar barreira
-        </NavLink>
-      </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
   );
 }
