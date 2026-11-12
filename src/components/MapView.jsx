@@ -19,7 +19,8 @@ export default function MapView({
   origem,
   destino,
   rota,
-  barreiras = []
+  barreiras = [],
+  aoClicarNoMapa
 }) {
   return (
     <div
@@ -27,7 +28,14 @@ export default function MapView({
       role="application"
       aria-label="Mapa de acessibilidade urbana"
     >
-      <MapContainer center={centro} zoom={14} scrollWheelZoom={true}>
+      <MapContainer
+        center={centro}
+        zoom={14}
+        scrollWheelZoom={true}
+        eventHandlers={{
+          click: (evento) => aoClicarNoMapa?.(evento)
+        }}
+      >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -48,7 +56,11 @@ export default function MapView({
         {rota && (
           <Polyline
             positions={rota}
-            pathOptions={{ color: "#1668a5", weight: 6, dashArray: "10 10" }}
+            pathOptions={{
+              color: "#1668a5",
+              weight: 6,
+              dashArray: "10 10"
+            }}
           />
         )}
 

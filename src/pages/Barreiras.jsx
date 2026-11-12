@@ -29,17 +29,32 @@ export default function Barreiras() {
 
   function aoMudar(evento) {
     const { name, value } = evento.target;
-    setFiltros((atual) => ({ ...atual, [name]: value }));
+
+    setFiltros((filtrosAnteriores) => ({
+      ...filtrosAnteriores,
+      [name]: value
+    }));
   }
 
   function aoLimpar() {
-    setFiltros({ bairro: "", tipo: "", gravidade: "" });
+    setFiltros({
+      bairro: "",
+      tipo: "",
+      gravidade: ""
+    });
   }
 
   return (
     <section className="secao">
       <div className="container">
-        <h1>Barreiras por região</h1>
+        <div className="cabecalho-secao">
+          <span className="etiqueta etiqueta--azul">Mapa</span>
+          <h1>Barreiras por região</h1>
+          <p>
+            Selecione uma região para visualizar os relatos disponíveis e os
+            pontos marcados no mapa.
+          </p>
+        </div>
 
         <FiltroBarreiras
           filtros={filtros}

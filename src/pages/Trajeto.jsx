@@ -25,16 +25,14 @@ export default function Trajeto() {
   const [origem, setOrigem] = useState(null);
   const [destino, setDestino] = useState(null);
   const [mensagem, setMensagem] = useState("");
-  const [erro, setErro] = useState("");
 
-  function escolherPonto(evento) {
+  function aoClicarNoMapa(evento) {
     const { lat, lng } = evento.latlng;
     const ponto = [lat, lng];
 
     if (!origem || (origem && destino)) {
       setOrigem(ponto);
       setDestino(null);
-      setRota(null);
       setMensagem("Origem selecionada. Agora clique no destino.");
       return;
     }
@@ -48,8 +46,10 @@ export default function Trajeto() {
     );
   }
 
-  function setRota(valor) {
-    return valor;
+  function limparSelecao() {
+    setOrigem(null);
+    setDestino(null);
+    setMensagem("");
   }
 
   const rota = origem && destino ? [origem, destino] : null;
@@ -57,24 +57,23 @@ export default function Trajeto() {
   return (
     <section className="secao">
       <div className="container">
-        <h1>Planejar trajeto</h1>
+        <div className="cabecalho-secao">
+          <span className="etiqueta etiqueta--azul">Planejar</span>
+          <h1>Selecione origem e destino</h1>
 
-        <p>
-          Clique primeiro no ponto de origem e depois no destino. O mapa
-          mostrará uma linha reta entre os pontos e os relatos de barreiras
-          próximos.
-        </p>
+          <p>
+            Clique primeiro no ponto de origem e depois no destino. O mapa
+            mostrará uma linha reta entre os pontos e os relatos de barreiras
+            cadastrados.
+          </p>
+        </div>
 
         <p className="aviso">
-          Esta é uma versão de protótipo: a linha não representa uma rota real
-          pelas ruas.
+          Protótipo: a linha representa uma distância aproximada e não uma
+          rota real pelas ruas.
         </p>
 
         <p className="erro" role="alert">
-          {erro}
-        </p>
-
-        <p role="status" aria-live="polite">
           {mensagem}
         </p>
 
@@ -84,26 +83,13 @@ export default function Trajeto() {
           destino={destino}
           rota={rota}
           barreiras={RELATOS_INICIAIS}
-          aoClicarNoMapa={escolherPonto}
+          aoClicarNoMapa={aoClicarNoMapa}
         />
-
-        <MapContainer
-        center={centro}
-        zoom={14}
-        scrollWheelZoom={true}
-        eventHandlers={{
-            click: (evento) => aoClicarNoMapa?.(evento)
-        }}
-        ></MapContainer>
 
         <button
           type="button"
           className="botao botao--secundario"
-          onClick={() => {
-            setOrigem(null);
-            setDestino(null);
-            setMensagem("");
-          }}
+          onClick={limparSelecao}
         >
           Limpar seleção
         </button>

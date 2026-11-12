@@ -18,9 +18,7 @@ export async function buscarCoordenadas(endereco) {
   const resultados = await resposta.json();
 
   if (!resultados.length) {
-    throw new Error(
-      "Endereço não encontrado. Tente incluir cidade e estado."
-    );
+    throw new Error("Endereço não encontrado. Tente incluir cidade e estado.");
   }
 
   const resultado = resultados[0];

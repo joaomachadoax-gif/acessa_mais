@@ -4,52 +4,173 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <div className="container hero__conteudo">
-          <p className="etiqueta">CitizenTech</p>
+        <div className="container hero__grid">
+          <div className="hero__texto">
+            <span className="etiqueta">CitizenTech</span>
 
-          <h1>Consulte barreiras de acessibilidade na sua cidade</h1>
+            <h1>
+              Sua cidade, mais <span className="destaque">acessível</span>{" "}
+              para todas as pessoas
+            </h1>
 
-          <p>
-            O Acessa+ ajuda moradores, pessoas com deficiência e idosos a
-            conhecer barreiras urbanas, como calçadas irregulares, falta de
-            rampas, obras e obstáculos.
-          </p>
+            <p>
+              Consulte barreiras urbanas, visualize o mapa da sua região e
+              registre problemas como calçadas irregulares, falta de rampas,
+              obras e má iluminação.
+            </p>
 
-          <div className="hero__acoes">
-            <Link className="botao botao--primario" to="/barreiras">
-              Ver barreiras no mapa
-            </Link>
+            <div className="hero__acoes">
+              <Link to="/barreiras" className="botao botao--primario">
+                Explorar o mapa
+              </Link>
 
-            <Link className="botao botao--secundario" to="/relatar">
-              Relatar uma barreira
-            </Link>
+              <Link to="/relatar" className="botao botao--contorno">
+                Relatar barreira
+              </Link>
+            </div>
+
+            <dl className="hero__indicadores">
+              <div>
+                <dt>128</dt>
+                <dd>barreiras relatadas</dd>
+              </div>
+
+              <div>
+                <dt>36</dt>
+                <dd>locais monitorados</dd>
+              </div>
+
+              <div>
+                <dt>89%</dt>
+                <dd>relatos revisados</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="hero__visual">
+            <div
+              className="cartao-mapa"
+              aria-label="Prévia do mapa de acessibilidade"
+            >
+              <div className="cartao-mapa__topo">
+                <span className="ponto ponto--verde"></span>
+                <p>Rota com boa acessibilidade</p>
+              </div>
+
+              <div className="mapa-simulado">
+                <span className="rota"></span>
+                <span
+                  className="marcador marcador--origem"
+                  title="Origem"
+                ></span>
+                <span
+                  className="marcador marcador--destino"
+                  title="Destino"
+                ></span>
+                <span className="marcador marcador--alerta">⚠️</span>
+              </div>
+
+              <div className="cartao-mapa__rodape">
+                <p>
+                  <strong>Centro</strong> — 3 barreiras ativas
+                </p>
+                <span className="selo">Protótipo</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="secao">
+      <section className="secao" id="como-funciona">
         <div className="container">
-          <h2>Como o Acessa+ ajuda você</h2>
+          <div className="cabecalho-secao">
+            <span className="etiqueta etiqueta--azul">Como funciona</span>
+            <h2>Três passos para se deslocar com mais segurança</h2>
+            <p>
+              O Acessa+ reúne informações colaborativas sobre obstáculos e
+              barreiras encontradas no caminho.
+            </p>
+          </div>
 
-          <div className="cartoes">
-            <article className="cartao">
-              <h3>Consulte antes de sair</h3>
-              <p>Veja relatos de barreiras registrados pelos moradores.</p>
+          <div className="grade-passos">
+            <article className="passo">
+              <span className="passo__numero">01</span>
+              <h3>Consulte a região</h3>
+              <p>
+                Escolha o bairro ou procure um endereço para ver as barreiras
+                já registradas pelos moradores.
+              </p>
             </article>
 
-            <article className="cartao">
-              <h3>Filtre pelo que importa</h3>
-              <p>Escolha bairro, tipo de barreira e nível de gravidade.</p>
+            <article className="passo">
+              <span className="passo__numero">02</span>
+              <h3>Analise os alertas</h3>
+              <p>
+                Filtre por calçada irregular, falta de rampa, obra ou
+                iluminação ruim.
+              </p>
             </article>
 
-            <article className="cartao">
-              <h3>Localize no mapa</h3>
-              <p>Veja onde cada barreira foi registrada.</p>
+            <article className="passo">
+              <span className="passo__numero">03</span>
+              <h3>Registre o problema</h3>
+              <p>
+                Encontrou uma barreira? Envie um relato simples e ajude outras
+                pessoas a se planejarem melhor.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="secao secao--recursos">
+        <div className="container">
+          <div className="cabecalho-secao">
+            <span className="etiqueta etiqueta--verde">Recursos</span>
+            <h2>Feito para ampliar a autonomia no dia a dia</h2>
+          </div>
+
+          <div className="grade-recursos">
+            <article className="recurso">
+              <div className="recurso__icone" aria-hidden="true">
+                🗺️
+              </div>
+              <h3>Mapa colaborativo</h3>
+              <p>
+                Visualize barreiras registradas em diferentes regiões da
+                cidade.
+              </p>
             </article>
 
-            <article className="cartao">
-              <h3>Avise outras pessoas</h3>
-              <p>Registre um obstáculo e ajude quem passa pelo mesmo lugar.</p>
+            <article className="recurso">
+              <div className="recurso__icone" aria-hidden="true">
+                🔍
+              </div>
+              <h3>Filtros inteligentes</h3>
+              <p>
+                Encontre apenas os obstáculos que impactam o seu deslocamento.
+              </p>
+            </article>
+
+            <article className="recurso">
+              <div className="recurso__icone" aria-hidden="true">
+                📢
+              </div>
+              <h3>Relatos da comunidade</h3>
+              <p>
+                Compartilhe informações rápidas e úteis com outros moradores.
+              </p>
+            </article>
+
+            <article className="recurso">
+              <div className="recurso__icone" aria-hidden="true">
+                ♿
+              </div>
+              <h3>Acessibilidade primeiro</h3>
+              <p>
+                Interface pensada para leitura clara, navegação por teclado e
+                contraste adequado.
+              </p>
             </article>
           </div>
         </div>

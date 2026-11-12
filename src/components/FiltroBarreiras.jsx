@@ -1,10 +1,6 @@
 import { BAIRROS } from "../data/relatosIniciais.js";
 
-export default function FiltroBarreiras({
-  filtros,
-  aoMudar,
-  aoLimpar
-}) {
+export default function FiltroBarreiras({ filtros, aoMudar, aoLimpar }) {
   return (
     <form
       className="filtros"
@@ -63,7 +59,11 @@ export default function FiltroBarreiras({
         </select>
       </div>
 
-      <button type="button" className="botao botao--secundario" onClick={aoLimpar}>
+      <button
+        type="button"
+        className="botao botao--secundario"
+        onClick={aoLimpar}
+      >
         Limpar filtros
       </button>
     </form>
