@@ -11,9 +11,6 @@ import Sobre from "./pages/Sobre.jsx";
 export default function App() {
   return (
     <>
-      <a className="pular" href="#conteudo">
-        Pular para o conteúdo principal
-      </a>
 
       <Navbar />
 

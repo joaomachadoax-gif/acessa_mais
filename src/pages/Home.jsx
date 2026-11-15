@@ -62,52 +62,58 @@ export default function Home() {
                 <div className="card-body">
                   <div className="d-flex align-items-center gap-2 mb-3">
                     <span
-                      className="d-inline-block rounded-circle"
-                      style={{
-                        width: "10px",
-                        height: "10px",
-                        backgroundColor: "var(--verde-600)"
-                      }}
-                    ></span>
-
-                    <span className="small fw-semibold">
-                      Rota com boa acessibilidade
-                    </span>
-                  </div>
-
-                  <div
-                    className="rounded-3 position-relative"
+                    className="d-inline-block rounded-circle"
                     style={{
-                      height: "240px",
-                      backgroundColor: "var(--azul-100)"
-                    }}
-                  >
-                    <div
-                      className="position-absolute"
-                      style={{
-                        top: "50%",
-                        left: "12%",
-                        width: "70%",
-                        height: "6px",
-                        borderRadius: "999px",
-                        backgroundColor: "var(--azul-800)",
-                        transform: "rotate(-12deg)"
-                      }}
-                    ></div>
-                  </div>
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "var(--verde-600)"
+          }}
+        ></span>
 
-                  <div className="d-flex justify-content-between align-items-center mt-3">
-                    <p className="small mb-0">
-                      <strong>Centro</strong> — 3 barreiras ativas
-                    </p>
+        <span className="small fw-semibold">
+          Rota com boa acessibilidade
+        </span>
+      </div>
+  
 
-                    <span className="badge text-success bg-light">
-                      Protótipo
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div
+        className="mapa-simulado position-relative rounded-3 overflow-hidden"
+      >
+        <div className="ruas-simuladas"></div>
+
+        <div className="rota-simulada"></div>
+
+        <div className="marcador-simulado marcador-origem">
+          <span className="visually-hidden">Origem do trajeto</span>
+        </div>
+
+        <div className="marcador-simulado marcador-destino">
+          <span className="visually-hidden">Destino do trajeto</span>
+        </div>
+
+        <div className="alerta-simulado">
+          <span aria-hidden="true">⚠️</span>
+          <span>Calçada irregular</span>
+        </div>
+
+        <div className="cartao-informacao">
+          <strong>Centro</strong>
+          <span>3 barreiras ativas</span>
+        </div>
+      </div>
+
+      <div className="d-flex justify-content-between align-items-center mt-3">
+        <p className="small mb-0">
+          <strong>Barreiras monitoradas</strong>
+        </p>
+
+        <span className="badge text-success bg-light">
+          Protótipo
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </section>

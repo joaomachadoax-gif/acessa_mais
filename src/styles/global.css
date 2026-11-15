@@ -193,3 +193,112 @@ button:focus-visible,
   outline: 3px solid var(--amarelo-500);
   outline-offset: 3px;
 }
+
+/* Prévia do mapa na Home */
+
+.mapa-simulado {
+  height: 260px;
+  background-color: var(--azul-claro);
+}
+
+.ruas-simuladas {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(31, 111, 139, 0.18) 2px,
+      transparent 2px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(31, 111, 139, 0.18) 2px,
+      transparent 2px
+    );
+  background-size: 42px 42px;
+}
+
+.rota-simulada {
+  position: absolute;
+  top: 48%;
+  left: 10%;
+  width: 78%;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--azul-medio);
+  transform: rotate(-14deg);
+  box-shadow: 0 4px 12px rgba(31, 111, 139, 0.35);
+}
+
+.rota-simulada::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background-image: linear-gradient(
+    to right,
+    var(--branco) 0 8px,
+    transparent 8px 18px
+  );
+  background-size: 18px 8px;
+  opacity: 0.55;
+}
+
+.marcador-simulado {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid var(--branco);
+  box-shadow: 0 6px 16px rgba(11, 61, 58, 0.25);
+}
+
+.marcador-origem {
+  top: 56%;
+  left: 8%;
+  background-color: var(--verde-600);
+}
+
+.marcador-destino {
+  top: 30%;
+  right: 10%;
+  background-color: var(--azul-escuro);
+}
+
+.alerta-simulado {
+  position: absolute;
+  top: 22%;
+  left: 42%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background-color: var(--branco);
+  color: var(--vermelho);
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: var(--sombra-suave);
+}
+
+.cartao-informacao {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  border-radius: var(--raio-pequeno);
+  background-color: var(--branco);
+  box-shadow: var(--sombra-suave);
+}
+
+.cartao-informacao strong {
+  font-size: 0.9rem;
+  color: var(--verde-escuro);
+}
+
+.cartao-informacao span {
+  font-size: 0.78rem;
+  color: var(--texto-suave);
+}

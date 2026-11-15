@@ -18,21 +18,15 @@ export default function Navbar() {
       <nav className="navbar navbar-expand-lg navbar-dark fundo-azul-escuro">
         <div className="container">
           <NavLink to="/" className="navbar-brand fw-bold">
-            <span
-              className="d-inline-flex align-items-center justify-content-center me-2"
-              style={{
-                width: "38px",
-                height: "38px",
-                borderRadius: "12px",
-                backgroundColor: "var(--amarelo-500)",
-                color: "var(--azul-900)"
-              }}
-            >
-              ♿
-            </span>
+  <img
+    src="/logo.png"
+    width="38"
+    height="38"
+    className="me-2"
+  />
 
-            Acessa+
-          </NavLink>
+  Acessa+
+</NavLink>
 
           <button
             className="navbar-toggler"
