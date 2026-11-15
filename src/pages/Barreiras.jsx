@@ -5,55 +5,135 @@ import RelatoCard from "../components/RelatoCard.jsx";
 import { RELATOS_INICIAIS } from "../data/relatosIniciais.js";
 import { obterRelatosSalvos } from "../services/relatos.js";
 
+
 const CENTRO_PADRAO = [-23.5505, -46.6333];
 
+const FILTROS_VAZIOS = {
+  estado: "",
+  cidade: "",
+  bairro: "",
+  busca: "",
+  descricao: "",
+  tipo: "",
+  gravidade: ""
+};
+
+
 export default function Barreiras() {
-  const [filtros, setFiltros] = useState({
-    bairro: "",
-    tipo: "",
-    gravidade: ""
-  });
+  const [filtrosAplicados, setFiltrosAplicados] = useState(FILTROS_VAZIOS);
+  const [filtrosTemporarios, setFiltrosTemporarios] = useState(FILTROS_VAZIOS);
 
   const todosRelatos = [...RELATOS_INICIAIS, ...obterRelatosSalvos()];
 
   const relatosFiltrados = useMemo(() => {
-    return todosRelatos.filter((relato) => {
-      const mesmoBairro = !filtros.bairro || relato.bairro === filtros.bairro;
-      const mesmoTipo = !filtros.tipo || relato.tipo === filtros.tipo;
-      const mesmaGravidade =
-        !filtros.gravidade || relato.gravidade === filtros.gravidade;
+    const busca = filtrosAplicados.busca.trim().toLowerCase();
+    const descricao = filtrosAplicados.descricao.trim().toLowerCase();
 
-      return mesmoBairro && mesmoTipo && mesmaGravidade;
+    return todosRelatos.filter((relato) => {
+      const textoRelato = [
+        relato.titulo,
+        relato.bairro,
+        relato.cidade,
+        relato.estado,
+        relato.tipo,
+        relato.descricao
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      const descricaoRelato = (relato.descricao || "").toLowerCase();
+
+      const correspondeBusca =
+        !busca || textoRelato.includes(busca);
+
+      const correspondeDescricao =
+        !descricao || descricaoRelato.includes(descricao);
+
+      const mesmoEstado =
+        !filtrosAplicados.estado ||
+        relato.estado === filtrosAplicados.estado;
+
+      const mesmaCidade =
+        !filtrosAplicados.cidade ||
+        relato.cidade === filtrosAplicados.cidade;
+
+      const mesmoBairro =
+        !filtrosAplicados.bairro ||
+        relato.bairro === filtrosAplicados.bairro;
+
+      const mesmoTipo =
+        !filtrosAplicados.tipo ||
+        relato.tipo === filtrosAplicados.tipo;
+
+      const mesmaGravidade =
+        !filtrosAplicados.gravidade ||
+        relato.gravidade === filtrosAplicados.gravidade;
+
+      return (
+        correspondeBusca &&
+        correspondeDescricao &&
+        mesmoEstado &&
+        mesmaCidade &&
+        mesmoBairro &&
+        mesmoTipo &&
+        mesmaGravidade
+      );
     });
-  }, [filtros, todosRelatos]);
+  }, [filtrosAplicados, todosRelatos]);
+
 
   function aoMudar(evento) {
     const { name, value } = evento.target;
 
-    setFiltros((valoresAnteriores) => ({
-      ...valoresAnteriores,
-      [name]: value
-    }));
+    setFiltrosTemporarios((valoresAnteriores) => {
+      const novosFiltros = {
+        ...valoresAnteriores,
+        [name]: value
+      };
+
+      if (name === "estado") {
+        novosFiltros.cidade = "";
+        novosFiltros.bairro = "";
+      }
+
+      if (name === "cidade") {
+        novosFiltros.bairro = "";
+      }
+
+      return novosFiltros;
+    });
+  }
+
+  function aoAplicarFiltros(evento) {
+    evento.preventDefault();
+
+    setFiltrosAplicados(filtrosTemporarios);
   }
 
   function aoLimpar() {
-    setFiltros({ bairro: "", tipo: "", gravidade: "" });
+    setFiltrosTemporarios(FILTROS_VAZIOS);
+    setFiltrosAplicados(FILTROS_VAZIOS);
   }
+
 
   return (
     <section className="py-5">
       <div className="container">
         <div className="mb-4">
           <span className="etiqueta etiqueta-azul mb-3">Mapa</span>
+
           <h1 className="fw-bold">Barreiras por região</h1>
+
           <p className="text-body-secondary">
-            Selecione uma região para visualizar os relatos disponíveis.
+            Pesquise e selecione filtros para visualizar os relatos disponíveis.
           </p>
         </div>
 
         <FiltroBarreiras
-          filtros={filtros}
+          filtros={filtrosTemporarios}
           aoMudar={aoMudar}
+          aoAplicarFiltros={aoAplicarFiltros}
           aoLimpar={aoLimpar}
         />
 
