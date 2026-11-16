@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MapView from "../components/MapView.jsx";
 import { salvarRelato } from "../services/relatos.js";
-import { buscarCoordenadas } from "../services/geocoding.js";
+import { buscarCoordenadasComContexto } from "../services/geocoding.js"
 
 
 const URL_ESTADOS =
@@ -130,9 +130,12 @@ export default function Relatar() {
     setCarregando(true);
 
     try {
-      const ponto = await buscarCoordenadas(
-        `${form.local}, ${form.bairro}, ${form.cidade}, ${form.estado}`
-      );
+      const ponto = await buscarCoordenadasComContexto({
+        local: form.local,
+        bairro: form.bairro,
+        cidade: form.cidade,
+        estado: form.estado
+      });
 
       setCoordenadas(ponto.coordenadas);
 

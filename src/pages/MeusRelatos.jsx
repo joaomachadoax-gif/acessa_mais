@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import RelatoCard from "../components/RelatoCard.jsx";
 import { obterRelatosSalvos, atualizarStatus } from "../services/relatos.js";
 
+
 export default function MeusRelatos() {
   const [relatos, setRelatos] = useState(obterRelatosSalvos());
   const [mensagem, setMensagem] = useState("");
+
 
   function alterarStatus(id, statusAtual) {
     const novoStatus = statusAtual === "Aberto" ? "Resolvido" : "Aberto";
@@ -15,16 +17,30 @@ export default function MeusRelatos() {
     setMensagem(`Relato atualizado para "${novoStatus}".`);
   }
 
+
   return (
     <section className="py-5">
       <div className="container">
-        <div className="mb-4">
-          <span className="etiqueta etiqueta-verde mb-3">Acompanhamento</span>
-          <h1 className="fw-bold">Meus relatos</h1>
-          <p className="text-body-secondary">
-            Veja as barreiras registradas neste dispositivo e atualize o
-            status de cada ocorrência.
-          </p>
+        <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <span className="etiqueta etiqueta-verde mb-3">
+              Acompanhamento
+            </span>
+
+            <h1 className="fw-bold mb-1">Meus relatos</h1>
+
+            <p className="text-body-secondary mb-0">
+              Veja as barreiras registradas neste dispositivo e atualize o
+              status de cada ocorrência.
+            </p>
+          </div>
+
+          <Link
+            to="/relatar"
+            className="btn botao-amarelo"
+          >
+            Relatar nova barreira
+          </Link>
         </div>
 
         <div
@@ -55,10 +71,6 @@ export default function MeusRelatos() {
             </div>
           ))}
         </div>
-
-        <Link to="/relatar" className="btn botao-amarelo mt-4">
-          Relatar nova barreira
-        </Link>
       </div>
     </section>
   );

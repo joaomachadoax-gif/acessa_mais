@@ -2,8 +2,11 @@ import { useState } from "react";
 import MapView from "../components/MapView.jsx";
 import { RELATOS_INICIAIS } from "../data/relatosIniciais.js";
 import { calcularRotaAcessivel } from "../services/routing.js";
+import { traduzirInstrucao } from "../services/instrucoes.js";
+
 
 const CENTRO_PADRAO = [-23.5505, -46.6333];
+
 
 export default function Trajeto() {
   const [origem, setOrigem] = useState(null);
@@ -14,9 +17,11 @@ export default function Trajeto() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
+
   function aoClicarNoMapa(evento) {
     const { lat, lng } = evento.latlng;
     const ponto = [lat, lng];
+
 
     if (!origem || (origem && destino)) {
       setOrigem(ponto);
@@ -27,9 +32,11 @@ export default function Trajeto() {
       return;
     }
 
+
     setDestino(ponto);
     buscarRota(ponto);
   }
+
 
   async function buscarRota(pontoDestino) {
     setCarregando(true);
@@ -37,11 +44,17 @@ export default function Trajeto() {
     setRota(null);
     setInstrucoes([]);
 
+
     try {
       const resultado = await calcularRotaAcessivel(origem, pontoDestino);
 
+
       setRota(resultado.coordenadasRota);
-      setInstrucoes(resultado.instrucoes);
+      setInstrucoes(
+        resultado.instrucoes.map((instrucao) =>
+          traduzirInstrucao(instrucao)
+  )
+);
       setMensagem(
         `Rota acessível encontrada: ${resultado.distanciaKm} km, aproximadamente ${resultado.duracaoMinutos} minutos.`
       );
@@ -53,6 +66,7 @@ export default function Trajeto() {
     }
   }
 
+
   function limparSelecao() {
     setOrigem(null);
     setDestino(null);
@@ -62,13 +76,16 @@ export default function Trajeto() {
     setErro("");
   }
 
+
   return (
     <section className="py-5">
       <div className="container">
         <div className="mb-4">
           <span className="etiqueta etiqueta-azul mb-3">Planejar</span>
 
+
           <h1 className="fw-bold">Selecione origem e destino</h1>
+
 
           <p className="text-body-secondary">
             Clique primeiro no ponto de origem e depois no destino. O site
@@ -76,13 +93,16 @@ export default function Trajeto() {
           </p>
         </div>
 
+
         {erro && <div className="alert alert-danger">{erro}</div>}
+
 
         <div className="alert alert-info" role="status" aria-live="polite">
           {carregando
             ? "Calculando rota acessível..."
             : mensagem || "Clique no mapa para selecionar a origem."}
         </div>
+
 
         <MapView
           centro={CENTRO_PADRAO}
@@ -93,10 +113,12 @@ export default function Trajeto() {
           aoClicarNoMapa={aoClicarNoMapa}
         />
 
+
         {instrucoes.length > 0 && (
           <div className="card cartao-suave mt-4">
             <div className="card-body">
               <h2 className="h5 fw-bold mb-3">Instruções do trajeto</h2>
+
 
               <ol className="mb-0">
                 {instrucoes.map((instrucao, indice) => (
@@ -106,6 +128,7 @@ export default function Trajeto() {
             </div>
           </div>
         )}
+
 
         <button
           type="button"
