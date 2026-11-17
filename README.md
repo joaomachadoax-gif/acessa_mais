@@ -75,11 +75,11 @@ A página Barreiras por região permite consultar relatos de barreiras de acessi
 
 A página Relatar barreira permite que o usuário registre uma barreira encontrada na cidade. O formulário solicita informações como estado, cidade, bairro, endereço ou ponto de referência, tipo de barreira, gravidade e descrição.
 
-## Página Meus relatos
+### Página Meus relatos
 
 A página Meus relatos reúne os relatos enviados pelo próprio usuário. Nela, é possível visualizar as barreiras registradas no dispositivo e acompanhar o status de cada ocorrência.
 
-## Página Sobre
+### Página Sobre
 
 A página Sobre explica o problema abordado pelo Acessa+, a solução proposta e os benefícios para a comunidade. Ela também apresenta a relação do projeto com o ODS 11.
 
