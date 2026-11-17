@@ -10,37 +10,34 @@ O Acessa+ está relacionado ao ODS 11: Cidades e Comunidades Sustentáveis, que 
 ## Estrutura do projeto
 
 acessa-mais-react/
-|--public/
-|  |----logo.png
-|  |----favicon.png
-|--src/
-|  |---components/
-|  |  |----MapView.jsx
-|  |  |----Navbar.jsx 
-|  |  |----Footer.jsx
-|  |  |----FiltroBarreiras.jsx
-|  |  |----RelatoCard.jsx
-|  |---data/
-|  |  |----locais.js
-|  |  |----relatosIniciais.js
-|  |---pages/
-|  |  |----Home.jsx
-|  |  |----Trajeto.jsx
-|  |  |----Barreiras.jsx
-|  |  |----Relatar.jsx
-|  |  |----MeusRelatos.jsx
-|  |  |----Sobre.jsx
-|  |---services/
-|  |  |----geocoding.js
-|  |  |----relatos.js
-|  |  |----routing.js
-|  |---styles/
-|  |  |----global.css
-|  |---App.jsx
-|  |---main.jsx
-|--index.html
-|--package.json
-|--vite.config.js
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── MapView.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── Footer.jsx
+│   │   ├── FiltroBarreiras.jsx
+│   │   └── RelatoCard.jsx
+│   ├── data/
+│   │   └── relatosIniciais.js
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Trajeto.jsx
+│   │   ├── Barreiras.jsx
+│   │   ├── Relatar.jsx
+│   │   ├── MeusRelatos.jsx
+│   │   └── Sobre.jsx
+│   ├── services/
+│   │   ├── geocoding.js
+│   │   ├── relatos.js
+│   │   └── routing.js
+│   ├── styles/
+│   │   └── global.css
+│   ├── App.jsx
+│   └── main.jsx
+├── index.html
+├── package.json
+└── vite.config.js
 
 ## Framework e tecnologias utilizadas
 
