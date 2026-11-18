@@ -1,4 +1,12 @@
-import { ESTADOS, CIDADES_POR_ESTADO, BAIRROS_POR_CIDADE } from "../data/locais.js";
+import { useEffect, useState } from "react";
+import { obterRelatosSalvos } from "../services/relatos.js";
+
+
+const URL_ESTADOS =
+  "https://servicodados.ibge.gov.br/api/v1/localidades/estados";
+
+const URL_MUNICIPIOS = (siglaEstado) =>
+  `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${siglaEstado}/municipios?orderBy=nome`;
 
 
 export default function FiltroBarreiras({
@@ -7,13 +15,69 @@ export default function FiltroBarreiras({
   aoAplicarFiltros,
   aoLimpar
 }) {
-  const cidadesDisponiveis = filtros.estado
-    ? CIDADES_POR_ESTADO[filtros.estado] || []
-    : [];
+  const [estados, setEstados] = useState([]);
+  const [cidades, setCidades] = useState([]);
+  const [carregandoCidades, setCarregandoCidades] = useState(false);
 
   const bairrosDisponiveis = filtros.cidade
-    ? BAIRROS_POR_CIDADE[filtros.cidade] || []
+    ? [
+        ...new Set(
+          obterRelatosSalvos()
+            .filter(
+              (relato) =>
+                relato.cidade === filtros.cidade &&
+                relato.bairro
+            )
+            .map((relato) => relato.bairro)
+        )
+      ].sort((a, b) => a.localeCompare(b, "pt-BR"))
     : [];
+
+
+  useEffect(() => {
+    async function carregarEstados() {
+      try {
+        const resposta = await fetch(URL_ESTADOS);
+        const dados = await resposta.json();
+
+        const estadosOrdenados = [...dados].sort((a, b) =>
+          a.nome.localeCompare(b.nome, "pt-BR")
+        );
+
+        setEstados(estadosOrdenados);
+      } catch (erro) {
+        console.error("Erro ao carregar estados:", erro);
+      }
+    }
+
+    carregarEstados();
+  }, []);
+
+
+  useEffect(() => {
+    if (!filtros.estado) {
+      setCidades([]);
+      return;
+    }
+
+    async function carregarCidades() {
+      setCarregandoCidades(true);
+
+      try {
+        const resposta = await fetch(URL_MUNICIPIOS(filtros.estado));
+        const dados = await resposta.json();
+
+        setCidades(dados);
+      } catch (erro) {
+        console.error("Erro ao carregar cidades:", erro);
+        setCidades([]);
+      } finally {
+        setCarregandoCidades(false);
+      }
+    }
+
+    carregarCidades();
+  }, [filtros.estado]);
 
 
   return (
@@ -24,7 +88,7 @@ export default function FiltroBarreiras({
       <h2 className="h5 fw-bold mb-3">Filtrar barreiras</h2>
 
       <div className="row g-3">
-        <div className="col-12 col-md-3">
+        <div className="col-12 col-md-4">
           <label htmlFor="estado" className="form-label fw-semibold">
             Estado
           </label>
@@ -38,15 +102,15 @@ export default function FiltroBarreiras({
           >
             <option value="">Todos os estados</option>
 
-            {ESTADOS.map((estado) => (
-              <option key={estado.sigla} value={estado.sigla}>
+            {estados.map((estado) => (
+              <option key={estado.id} value={estado.sigla}>
                 {estado.nome}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="col-12 col-md-3">
+        <div className="col-12 col-md-4">
           <label htmlFor="cidade" className="form-label fw-semibold">
             Cidade
           </label>
@@ -57,47 +121,50 @@ export default function FiltroBarreiras({
             className="form-select form-select-lg"
             value={filtros.cidade}
             onChange={aoMudar}
-            disabled={!filtros.estado}
+            disabled={!filtros.estado || carregandoCidades}
           >
             <option value="">
-              {filtros.estado
+              {carregandoCidades
+                ? "Carregando cidades..."
+                : filtros.estado
                 ? "Todas as cidades"
                 : "Selecione um estado"}
             </option>
 
-            {cidadesDisponiveis.map((cidade) => (
-              <option key={cidade.nome} value={cidade.nome}>
+            {cidades.map((cidade) => (
+              <option key={cidade.id} value={cidade.nome}>
                 {cidade.nome}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-4">
           <label htmlFor="bairro" className="form-label fw-semibold">
             Bairro
           </label>
 
-          <select
+          <input
+            type="text"
             id="bairro"
             name="bairro"
-            className="form-select form-select-lg"
+            className="form-control form-control-lg"
+            placeholder={
+              filtros.cidade
+                ? "Digite o bairro"
+                : "Selecione uma cidade"
+            }
             value={filtros.bairro}
             onChange={aoMudar}
             disabled={!filtros.cidade}
-          >
-            <option value="">
-              {filtros.cidade
-                ? "Todos os bairros"
-                : "Selecione uma cidade"}
-            </option>
+            list="lista-bairros"
+          />
 
+          <datalist id="lista-bairros">
             {bairrosDisponiveis.map((bairro) => (
-              <option key={bairro} value={bairro}>
-                {bairro}
-              </option>
+              <option key={bairro} value={bairro} />
             ))}
-          </select>
+          </datalist>
         </div>
 
         <div className="col-12">
@@ -145,11 +212,19 @@ export default function FiltroBarreiras({
             onChange={aoMudar}
           >
             <option value="">Todos os tipos</option>
-            <option value="Calçada irregular">Calçada irregular</option>
-            <option value="Falta de rampa">Falta de rampa</option>
-            <option value="Obstrução">Obstrução</option>
-            <option value="Iluminação">Iluminação</option>
-            <option value="Transporte">Transporte</option>
+            <option value="Calcada irregular">
+              Calçada irregular
+            </option>
+            <option value="Falta de rampa">
+              Falta de rampa
+            </option>
+            <option value="Obra">Obra</option>
+            <option value="Iluminacao ruim">
+              Iluminação ruim
+            </option>
+            <option value="Obstaculo">
+              Obstáculo na calçada
+            </option>
           </select>
         </div>
 
@@ -166,16 +241,16 @@ export default function FiltroBarreiras({
             onChange={aoMudar}
           >
             <option value="">Todas as gravidades</option>
-            <option value="Baixa">Baixa</option>
-            <option value="Média">Média</option>
             <option value="Alta">Alta</option>
+            <option value="Media">Média</option>
+            <option value="Baixa">Baixa</option>
           </select>
         </div>
 
         <div className="col-12 d-flex flex-wrap gap-2 mt-2">
           <button
             type="submit"
-            className="btn btn-warning btn-lg d-inline-flex align-items-center gap-2"
+            className="btn btn-primary btn-lg d-inline-flex align-items-center gap-2"
           >
             <i className="bi bi-search" aria-hidden="true"></i>
             Aplicar filtros
