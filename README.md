@@ -87,5 +87,4 @@ A página Sobre explica o problema abordado pelo Acessa+, a solução proposta e
 
 O JavaScript é utilizado em diversas partes do Acessa+ para criar interações e atualizar a interface sem recarregar a página.
 
-O React utiliza o JavaScript para controlar o estado da aplicação. Por exemplo, quando o usuário seleciona um filtro, digita uma busca ou clica no mapa, o estado é atualizado e a interface responde automaticamente.
-
+O React utiliza o JavaScript para controlar o estado da aplicação. Por exemplo, quando o usuário seleciona um filtro, digita uma busca ou clica no mapa, o estado é atualizado e a interface responde automa
